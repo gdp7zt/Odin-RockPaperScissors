@@ -1,3 +1,18 @@
+const buttonRock = document.querySelector('#rock');
+buttonRock.addEventListener('click', () => {
+    playRound('rock', getComputerChoice())
+    });
+
+const buttonPaper = document.querySelector('#paper');
+buttonPaper.addEventListener('click', () => {
+    playRound('paper', getComputerChoice())
+    });
+
+const buttonScissors = document.querySelector('#scissors');
+buttonScissors.addEventListener('click', () => {
+    playRound('scissors', getComputerChoice())
+    });
+
 function getComputerChoice() {
     let RPS = Math.floor((Math.random() * 3)) + 1;
     if (RPS === 1){
@@ -53,10 +68,8 @@ function playRound(playerSelection, computerSelection) {
 
 function game(){
     let playerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("Choose rock paper or scissors");
-        playerScore += playRound(playerSelection, getComputerChoice());   
-    }
+    let playerSelection = prompt("Choose rock paper or scissors");
+    playerScore += playRound(playerSelection, getComputerChoice());   
     if (playerScore > 0) {
         console.log("You win overall!");
     }
@@ -68,4 +81,3 @@ function game(){
     }
 }
 
-game();
