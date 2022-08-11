@@ -24,6 +24,8 @@ resetButton.addEventListener('click', () => {
 const results = document.querySelector('#results');
 
 const score = document.querySelector('#score');
+const buttons = document.querySelector('.buttons');
+const endGame = document.querySelector("#endgame");
 
 function getComputerChoice() {
     let RPS = Math.floor((Math.random() * 3)) + 1;
@@ -76,15 +78,7 @@ function playRound(playerSelection) {
         }
     }
     showScore();
-    if(gameOver()){
-        if (playerScore === 5){
-            score.textContent = `You win with a score of ${playerScore} to ${computerScore}`;
-        }
-        else{
-            score.textContent = `You lose with a score of ${computerScore} to ${playerScore}`;
-        }
-        restartGame();
-    }
+    playAgain();
 }
 
 function showScore(){
@@ -99,6 +93,18 @@ function gameOver(){
     return playerScore === 5 || computerScore === 5;
 }
 
+function playAgain(){
+    if(gameOver()){
+        if (playerScore === 5){
+            score.textContent = `You win with a score of ${playerScore} to ${computerScore}`;
+        }
+        else{
+            score.textContent = `You lose with a score of ${computerScore} to ${playerScore}`;
+        }
+        buttons.style = "pointer-events: none";
+        endGame.textContent = "Please refresh the game or use the reset button to play again";
+    }
+}
 function restartGame(){
     location.reload();
 }
@@ -107,4 +113,8 @@ function resetGame(){
     playerScore = 0;
     computerScore = 0;
     score.textContent = "Player: 0 Computer: 0";
+    buttons.style = "pointer-events: auto"
+    endGame.textContent = "";
+    score.textContent = "Score";
+    results.textContent = "Results";
 }
