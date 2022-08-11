@@ -1,17 +1,29 @@
-const buttonRock = document.querySelector('#rock');
+let playerScore = 0;
+let computerScore = 0;
+
+const buttonRock = document.getElementById('rock');
 buttonRock.addEventListener('click', () => {
-    playRound('rock', getComputerChoice())
+    playRound('rock')
     });
 
-const buttonPaper = document.querySelector('#paper');
+const buttonPaper = document.getElementById('paper');
 buttonPaper.addEventListener('click', () => {
-    playRound('paper', getComputerChoice())
+    playRound('paper')
     });
 
-const buttonScissors = document.querySelector('#scissors');
+const buttonScissors = document.getElementById('scissors');
 buttonScissors.addEventListener('click', () => {
-    playRound('scissors', getComputerChoice())
+    playRound('scissors')
     });
+
+const resetButton = document.getElementById('restart');
+resetButton.addEventListener('click', () => {
+    resetGame();
+});
+
+const results = document.querySelector('#results');
+
+const score = document.querySelector('#score');
 
 function getComputerChoice() {
     let RPS = Math.floor((Math.random() * 3)) + 1;
@@ -26,58 +38,73 @@ function getComputerChoice() {
     }
 }
 
-function playRound(playerSelection, computerSelection) {
+function playRound(playerSelection) {
     playerSelection = playerSelection.toLowerCase();
-    console.log(playerSelection)
-
+    computerSelection = getComputerChoice();
     if (playerSelection === computerSelection) {
-        console.log("You tie! You both chose " + playerSelection);
-        return 0;
+        showResults("You tie! You both chose " + playerSelection);
+        showScore();
     }
     else if (playerSelection === "rock"){
         if (computerSelection === "paper"){
-            console.log("You lose! Paper beats Rock");
-            return -1;
+            showResults("You lose! Paper beats Rock");
+            computerScore += 1;
         }
         else{
-            console.log("You win! Rock beats Scissors");
-            return 1;
+            showResults("You win! Rock beats Scissors");
+            playerScore += 1;
         }
     }
     else if (playerSelection === "paper"){
         if (computerSelection === "scissors"){
-            console.log("You lose! Scissors beats paper");
-            return -1;
+            showResults("You lose! Scissors beats paper");
+            computerScore += 1;
         }
         else{
-            console.log("You win! Paper beats rock");
-            return 1;
+            showResults("You win! Paper beats rock");
+            playerScore += 1;
         }
     }
     else if (playerSelection === "scissors"){
         if (computerSelection === "rock"){
-            console.log("You lose! Rock beats scissors");
-            return 1;
+            showResults("You lose! Rock beats scissors");
+            computerScore += 1;
         }
         else{
-            console.log("You win! Scissors beats paper");
-            return 1;
+            showResults("You win! Scissors beats paper");
+            playerScore += 1;
         }
     }
-}
-
-function game(){
-    let playerScore = 0;
-    let playerSelection = prompt("Choose rock paper or scissors");
-    playerScore += playRound(playerSelection, getComputerChoice());   
-    if (playerScore > 0) {
-        console.log("You win overall!");
-    }
-    else if (playerScore < 0) {
-        console.log("You lose overall!");
-    }
-    else{
-        console.log("It's a tie overall!");
+    showScore();
+    if(gameOver()){
+        if (playerScore === 5){
+            score.textContent = `You win with a score of ${playerScore} to ${computerScore}`;
+        }
+        else{
+            score.textContent = `You lose with a score of ${computerScore} to ${playerScore}`;
+        }
+        restartGame();
     }
 }
 
+function showScore(){
+    score.textContent = "Player: " + playerScore + " Computer: " + computerScore;
+}
+
+function showResults(string){
+    results.textContent = string;
+}
+
+function gameOver(){
+    return playerScore === 5 || computerScore === 5;
+}
+
+function restartGame(){
+    location.reload();
+}
+
+function resetGame(){
+    playerScore = 0;
+    computerScore = 0;
+    score.textContent = "Player: 0 Computer: 0";
+}
